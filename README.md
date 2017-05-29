@@ -1,5 +1,9 @@
 # Example CycleJS-TypeScript application
 
+See it running:
+
+<https://kylecordes.github.io/cycle-example-1>
+
 ## Intro / Goals
 
 This is a small, simple example Cycle application. Its purpose is simply to
@@ -36,7 +40,9 @@ npm start
 ## Status
 
 This is currently quite a simple application, not showing very many advanced
-ideas yet.
+ideas yet. Status and upcoming ideas are in the issue tracker:
+
+https://github.com/kylecordes/cycle-example-1/issues
 
 ## Why?
 
