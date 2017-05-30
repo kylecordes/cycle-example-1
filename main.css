@@ -1385,7 +1385,7 @@ The content `<div>` is where all your content goes.
 .content h2 {
   margin: 50px 0 20px 0;
   font-weight: 300;
-  color: #888; }
+  color: #666; }
 
 /*
 The `#menu` `<div>` is the parent `<div>` that contains the `.pure-menu` that
