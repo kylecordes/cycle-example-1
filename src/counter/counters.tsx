@@ -27,10 +27,10 @@ function view(counter1DOM: Stream<VNode>, counter2DOM: Stream<VNode>) {
           {c2}
         </div>
         <div className='pure-u-1-3'>
-          <p>This screen demonstrates two components (of the same kind) use side
-          by side. Each has its own isolated state. Look in the source code to
-          see the minimal amount of "glue" required to use components and then
-          display them jointly in apparent component.</p>
+          <p>This screen demonstrates two stateful components (of the same kind)
+            used side by side. Each has its own isolated state. Look in the source code to
+            see the minimal amount of "glue" required to use components and then
+            display them jointly in apparent component.</p>
         </div>
       </div>
     );
