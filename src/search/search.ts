@@ -1,8 +1,8 @@
-import xs, { Stream } from 'xstream';
+import { Stream } from 'xstream';
 import { VNode, DOMSource } from '@cycle/dom';
 import { HTTPSource } from '@cycle/http';
 import { TimeSource } from '@cycle/time';
-import { div, label, input, hr, ul, li, a, h2, p } from '@cycle/dom';
+import { div, label, input, hr, ul, li, a, h2, p, form } from '@cycle/dom';
 
 interface Sources {
   DOM: DOMSource;
@@ -31,14 +31,23 @@ export function Search(sources: Sources) {
   };
 }
 
-function view(searchResults$: Stream<any[]>): xs<VNode> {
+function view(searchResults$: Stream<any[]>): Stream<VNode> {
   return searchResults$.map(results =>
     div('.pure-g', [
       div('.pure-u-2-3', [
         h2('Github Search'),
-        label('.label', 'Search: '),
-        input('.field', { attrs: { type: 'text' } }),
+
+        form('.pure-form pure-form-stacked', [
+          div('.pure-g', [
+            div('.pure-u-1.pure-u-md-1-3', [
+              label('.label', { attrs: { for: 'search' } }, 'Keyword: '),
+              input('#search.field.pure-u-23-24', { attrs: { type: 'text' } }),
+            ])
+          ])
+        ]),
+
         hr({ style: { width: '90%' } }),
+
         ul('.search-results', results.map(result =>
           li('.search-result', [
             a({ attrs: { href: result.html_url } }, result.name)
@@ -50,5 +59,5 @@ function view(searchResults$: Stream<any[]>): xs<VNode> {
         with Cycle. It is adapted from another published good hub search example.`)
       ])
     ])
-  );;
+  );
 }

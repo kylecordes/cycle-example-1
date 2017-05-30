@@ -2,15 +2,12 @@ import xs, { Stream } from 'xstream';
 import { VNode, DOMSource } from '@cycle/dom';
 import { div, button, h2, p, span } from '@cycle/dom';
 
-interface Sources {
-  DOM: DOMSource;
-};
+// It's possible to destructure and inline the sources type, see below.
 
-export function GrayPicker(sources: Sources) {
-
+export function GrayPicker({ DOM }: { DOM: DOMSource }) {
   const initial$ = xs.of(128);
-  const plus$ = sources.DOM.select('.plus').events('click').mapTo(10);
-  const minus$ = sources.DOM.select('.minus').events('click').mapTo(-10);
+  const plus$ = DOM.select('.plus').events('click').mapTo(10);
+  const minus$ = DOM.select('.minus').events('click').mapTo(-10);
   const val$ = xs.merge(initial$, plus$, minus$)
     .fold((acc, x) => Math.max(Math.min(acc + x, 255), 0), 0);
 
@@ -19,7 +16,7 @@ export function GrayPicker(sources: Sources) {
   };
 }
 
-function view(val$: Stream<number>): xs<VNode> {
+function view(val$: Stream<number>): Stream<VNode> {
   return val$.map(v =>
     div('.pure-g', [
       div('.pure-u-2-3', [
@@ -35,5 +32,5 @@ function view(val$: Stream<number>): xs<VNode> {
           component without any connection to the broader application.`)
       ])
     ])
-  );;
+  );
 }

@@ -1,11 +1,11 @@
-import xs from 'xstream';
+import xs, { Stream } from 'xstream';
 import { VNode } from '@cycle/dom';
 import { div } from '@cycle/dom';
 import { Converter } from 'showdown';
 
 import messageMd from './message';
 
-export function Home() {
+export function Home(sources: {}) {
   return {
     DOM: view()
   };
@@ -13,7 +13,7 @@ export function Home() {
 
 // TODO: https://github.com/showdownjs/showdown/issues/376
 
-function view(): xs<VNode> {
+function view(): Stream<VNode> {
   const converter = new Converter();
   const html = converter.makeHtml(messageMd);
   return xs.of(

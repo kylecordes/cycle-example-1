@@ -1,6 +1,6 @@
 import xs, { Stream } from 'xstream';
 import { DOMSource } from '@cycle/dom';
-import { div, button, h2, p, span } from '@cycle/dom';
+import { div, p, span } from '@cycle/dom';
 export interface Props {
   r: number;
   g: number;
