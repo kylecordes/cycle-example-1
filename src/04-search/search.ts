@@ -58,7 +58,7 @@ function isNumeric(n: any) {
 function labelField(id: string, labelText: string) {
   return div('.pure-u-1.pure-u-md-1-3', [
     label('.label', { attrs: { for: id } }, labelText),
-    input('.field.pure-u-23-24', { attrs: { id, type: 'text' } }),
+    input('.field.pure-u-23-24', { attrs: { id, type: 'text' } })
   ]);
 }
 
@@ -68,7 +68,7 @@ function view(searchResults$: Stream<any[]>): Stream<VNode> {
       div('.pure-u-2-3', [
         h2('Github Search'),
 
-        form('.pure-form pure-form-stacked', [
+        form('.pure-form.pure-form-stacked', [
           div('.pure-g', [
             labelField('search', 'Description'),
             labelField('language', 'Language'),

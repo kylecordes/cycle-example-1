@@ -1,6 +1,5 @@
 import xs, { Stream } from 'xstream';
 import { DOMSource } from '@cycle/dom';
-
 import { StateSource } from 'cycle-onionify';
 
 export interface State {
