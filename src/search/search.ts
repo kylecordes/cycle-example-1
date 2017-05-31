@@ -1,4 +1,4 @@
-import { Stream } from 'xstream';
+import xs, { Stream } from 'xstream';
 import { VNode, DOMSource } from '@cycle/dom';
 import { HTTPSource } from '@cycle/http';
 import { TimeSource } from '@cycle/time';
@@ -11,12 +11,32 @@ interface Sources {
 };
 
 export function Search(sources: Sources) {
-  const searchRequest$ = sources.DOM.select('.field').events('input')
-    .map(ev => (ev.target as HTMLInputElement).value)
+
+  function val$(selector: string) {
+    return sources.DOM.select(selector).events('input')
+      .map(ev => (ev.target as HTMLInputElement).value)
+      .startWith('');
+  }
+
+  const searchRequest$ = xs.combine(val$('#search'), val$('#language'), val$('#stars'))
+    .filter(query => query[0].length > 0)
+    .map(([search, language, stars]) => {
+      const terms = [search];
+      if (isNumeric(stars)) {
+        terms.push(`stars:">=${stars}"`);
+      }
+      if (language !== '') {
+        terms.push(`language:"${language}"`);
+      }
+      return {
+        q: terms.join(' ')
+      };
+    })
     .compose(sources.time.debounce(500))
-    .filter(query => query.length > 0)
-    .map(q => ({
-      url: `https://api.github.com/search/repositories?q=${encodeURI(q)}`,
+    .debug('criteria')
+    .map(query => ({
+      url: 'https://api.github.com/search/repositories',
+      query,
       category: 'github',
     }));
 
@@ -31,6 +51,17 @@ export function Search(sources: Sources) {
   };
 }
 
+function isNumeric(n: any) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function labelField(id: string, labelText: string) {
+  return div('.pure-u-1.pure-u-md-1-3', [
+    label('.label', { attrs: { for: id } }, labelText),
+    input('.field.pure-u-23-24', { attrs: { id, type: 'text' } }),
+  ]);
+}
+
 function view(searchResults$: Stream<any[]>): Stream<VNode> {
   return searchResults$.map(results =>
     div('.pure-g', [
@@ -39,10 +70,9 @@ function view(searchResults$: Stream<any[]>): Stream<VNode> {
 
         form('.pure-form pure-form-stacked', [
           div('.pure-g', [
-            div('.pure-u-1.pure-u-md-1-3', [
-              label('.label', { attrs: { for: 'search' } }, 'Keyword: '),
-              input('#search.field.pure-u-23-24', { attrs: { type: 'text' } }),
-            ])
+            labelField('search', 'Description'),
+            labelField('language', 'Language'),
+            labelField('stars', 'Min Stars'),
           ])
         ]),
 
@@ -55,8 +85,8 @@ function view(searchResults$: Stream<any[]>): Stream<VNode> {
         ))
       ]),
       div('.pure-u-1-3', [
-        p(` The screen demonstrates an incremental, debounced search implemented
-        with Cycle. It is adapted from another published good hub search example.`)
+        p(`This screen demonstrates an incremental, debounced search implemented
+        with Cycle. It is adapted from another published Github search example.`)
       ])
     ])
   );
