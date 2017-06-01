@@ -2161,3 +2161,8 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 
 .timer {
   margin-top: 20px; }
+
+.cell {
+  width: 15px;
+  height: 15px;
+  font-size: 12px; }
