@@ -15,12 +15,15 @@ interface Sources {
 export function Nav(sources: Sources) {
   const routeActions$ = xs.merge(
     ...routesDefs.map(def =>
-      sources.DOM.select('.' + def.cssClass).events('click').mapTo(def.urlPath)
+      sources.DOM.select('.' + def.cssClass)
+        .events('click')
+        .mapTo(def.urlPath)
     ));
 
   const active$ = sources.onion.state$.map(s => s.active);
 
-  const menuLink$ = sources.DOM.select('#menuLink').events('click')
+  const menuLink$ = sources.DOM.select('#menuLink')
+    .events('click', { preventDefault: true })
     .mapTo<Reducer>(state => ({ ...state, active: !state.active }));
 
   const contentReducers$ = sources.DOM.select('#main').events('click')

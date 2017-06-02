@@ -46,11 +46,12 @@ export function RouterOutlet<S extends Sinks>(sources: Sources, defs: RouteDef[]
 
   // Switch between component DOM outputs:
 
-  const match$ = sources.router.define(
-    defsWithComps.reduce((result, item) => ({
-      ...result,
-      [item.urlPath]: item.comp
-    }), {}));
+  const definitions = defsWithComps.reduce((result, item) => ({
+    ...result,
+    [item.urlPath]: item.comp
+  }), {});
+
+  const match$ = sources.router.define(definitions);
 
   const dom$ = match$.map((m: RouteMatcherReturn) => m.value)
     .map((c: Sinks) => c.DOM).flatten();

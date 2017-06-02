@@ -5,7 +5,7 @@ import { makeHTTPDriver } from '@cycle/http';
 import { timeDriver } from '@cycle/time';
 import onionify from 'cycle-onionify';
 import { makeRouterDriver } from 'cyclic-router';
-import { createBrowserHistory } from 'history';
+import { createHashHistory } from 'history';
 import switchPath from 'switch-path';
 
 import { App, Sources } from './app';
@@ -16,7 +16,7 @@ const drivers: any = {
   DOM: makeDOMDriver('#app'),
   HTTP: makeHTTPDriver(),
   // https://github.com/cyclejs-community/cyclic-router/issues/192 :
-  router: makeRouterDriver(createBrowserHistory(), switchPath as any),
+  router: makeRouterDriver(createHashHistory(), switchPath as any),
   time: timeDriver
 };
 
