@@ -1,7 +1,7 @@
-import { Stream } from 'xstream';
+import xs, { Stream } from 'xstream';
 import { VNode, DOMSource } from '@cycle/dom';
 import { TimeSource } from '@cycle/time';
-import { div, h2, table, tr, td, p, span } from '@cycle/dom';
+import { div, h2, table, tr, td, p, span, thunk } from '@cycle/dom';
 
 interface State {
   values: number[];
@@ -30,6 +30,14 @@ export function Grid(sources: Sources) {
   };
 }
 
+function cell(index: number, value: number) {
+  return td({ key: index },
+    [
+      span(' '),
+      span(value || '-')
+    ]);
+}
+
 function view(state$: Stream<State>): Stream<VNode> {
   const rowLength = 50;
   const cols = Array(rowLength).fill(0);
@@ -45,18 +53,12 @@ function view(state$: Stream<State>): Stream<VNode> {
         results. In its current form, this series of updates results in
         substantial browser CPU usage.`),
       table(
-        rows.map(row => tr(
-          { key: i },
-          cols.map(col => td(
-            {
-              key: i,
-              class: { cell: true }
-            },
-            [
-              span(' '),
-              span(state.values[i++] || '-')
-            ])
-          )))
+        { class: { cells: true } },
+        rows.map(row => tr({ key: i },
+          cols.map(col => thunk('td', ++i, cell, [i, state.values[i]]))
+          // without the thunk:
+          // cols.map(col => cell(++i, state.values[i]))
+        ))
       )
     ]);
   });
