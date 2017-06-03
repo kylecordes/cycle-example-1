@@ -18,6 +18,7 @@
     "@cycle/run": "^3.1.0",
     "@cycle/time": "^0.8.0",
     "cycle-onionify": "4.0.0-rc.8",
+    "cyclejs-modal": "^2.0.3",
     "cyclic-router": "4.0.5",
     "purecss": "^0.6.2",
     "showdown": "^1.7.1",

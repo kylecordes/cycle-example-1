@@ -38,7 +38,7 @@ export function App(sources: Sources): Sinks {
   sources.onion.state$.debug('state').addListener((x: any) => console.log(x));
 
   const nav = Nav(sources);  // Not isolated.
-  const outlet = RouterOutlet<Sinks>(sources, routesDefs, ['HTTP', 'onion', 'router']);
+  const outlet = RouterOutlet<Sinks>(sources, routesDefs, ['HTTP', 'onion', 'router', 'modal']);
   const initReducer$ = xs.of<Reducer>(() => ({ active: false }));
 
   const active$ = sources.onion.state$.map(s => s.active);

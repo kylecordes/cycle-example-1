@@ -38,10 +38,12 @@ function view(state$: Stream<State>) {
     .map(count =>
       <div>
         <p>Counter: {count}</p>
-        <div>
-          <button type='button' className='add'>Increase</button>
-          <button type='button' className='subtract'>Decrease</button>
-        </div>
+        <p>
+          <button type='button' className='pure-button add'>Increase</button>
+        </p>
+        <p>
+          <button type='button' className='pure-button subtract'>Decrease</button>
+        </p>
       </div>
     );
 }

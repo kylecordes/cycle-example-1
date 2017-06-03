@@ -7,10 +7,11 @@ import onionify from 'cycle-onionify';
 import { makeRouterDriver } from 'cyclic-router';
 import { createHashHistory } from 'history';
 import switchPath from 'switch-path';
+import { modalify } from 'cyclejs-modal';
 
 import { App, Sources } from './app';
 
-const main = onionify(App, 'onion');
+const main = modalify(onionify(App, 'onion'));
 
 const drivers: any = {
   DOM: makeDOMDriver('#app'),
