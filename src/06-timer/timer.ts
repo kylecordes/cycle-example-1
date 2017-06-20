@@ -8,7 +8,7 @@ import { div, span, button } from '@cycle/dom';
 export interface State {
   running: boolean;
   x: number;
-  key: number;
+  key: string;
 };
 
 interface Sources {

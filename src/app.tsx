@@ -34,8 +34,9 @@ interface Sinks {
 export function App(sources: Sources): Sinks {
   // subscribe to keep state alive while navigating routes.
   sources.onion.state$.addListener((x: any) => x);
+
   // Print each new state
-  sources.onion.state$.debug('state').addListener((x: any) => console.log(x));
+  sources.onion.state$.debug('state').addListener((x: any) => x);
 
   const nav = Nav(sources);  // Not isolated.
   const outlet = RouterOutlet<Sinks>(sources, routesDefs, ['HTTP', 'onion', 'router', 'modal']);

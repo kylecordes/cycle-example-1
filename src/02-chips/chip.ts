@@ -1,5 +1,4 @@
 import xs, { Stream } from 'xstream';
-import { DOMSource } from '@cycle/dom';
 import { div, p, span } from '@cycle/dom';
 
 export interface Props {
@@ -10,7 +9,6 @@ export interface Props {
 };
 
 interface Sources {
-  DOM: DOMSource;
   props: Stream<Props>;
 };
 
@@ -33,7 +31,8 @@ function view(props$: Stream<Props>) {
           style: {
             width: '100px',
             height: '50px',
-            border: '1px solid gray', 'background-color': `rgb(${props.r},${props.g},${props.b})`
+            border: '1px solid gray',
+            'background-color': `rgb(${props.r},${props.g},${props.b})`
           }
         })
       ])

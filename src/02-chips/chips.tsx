@@ -28,13 +28,13 @@ export function Chips(sources: {}) {
 function view(doms: Stream<VNode>[]) {
   return xs.combine(...doms)
     .map(chips =>
-      <div className='pure-g' >
-        <div className='pure-u-2-3' >
+      <div className='pure-g'>
+        <div className='pure-u-2-3'>
           {chips[0]}
           {chips[1]}
           {chips[2]}
         </div>
-        <div className='pure-u-1-3' >
+        <div className='pure-u-1-3'>
           <p>This screen demonstrates several instances of the same component.
             This component accepts "props" as a React component would.
             Different props are passed to each component instance.

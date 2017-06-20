@@ -1,6 +1,5 @@
 import xs, { Stream } from 'xstream';
-import { VNode } from '@cycle/dom';
-import { div } from '@cycle/dom';
+import { VNode, div } from '@cycle/dom';
 import { Converter } from 'showdown';
 
 import messageMd from './message';

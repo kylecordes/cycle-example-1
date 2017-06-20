@@ -1,4 +1,4 @@
-import xs, { Stream } from 'xstream';
+import { Stream } from 'xstream';
 import { VNode, DOMSource } from '@cycle/dom';
 import { TimeSource } from '@cycle/time';
 import { div, h2, table, tr, td, p, span, thunk } from '@cycle/dom';

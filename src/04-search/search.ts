@@ -1,8 +1,8 @@
 import xs, { Stream } from 'xstream';
 import { VNode, DOMSource } from '@cycle/dom';
+import { div, label, input, hr, ul, li, a, h2, p, form } from '@cycle/dom';
 import { HTTPSource } from '@cycle/http';
 import { TimeSource } from '@cycle/time';
-import { div, label, input, hr, ul, li, a, h2, p, form } from '@cycle/dom';
 
 interface Sources {
   DOM: DOMSource;
@@ -12,35 +12,38 @@ interface Sources {
 
 export function Search(sources: Sources) {
 
+  const category = 'github';
+
   function val$(selector: string) {
     return sources.DOM.select(selector).events('input')
       .map(ev => (ev.target as HTMLInputElement).value)
       .startWith('');
   }
 
-  const searchRequest$ = xs.combine(val$('#search'), val$('#language'), val$('#stars'))
-    .filter(query => query[0].length > 0)
-    .map(([search, language, stars]) => {
-      const terms = [search];
-      if (isNumeric(stars)) {
-        terms.push(`stars:">=${stars}"`);
-      }
-      if (language !== '') {
-        terms.push(`language:"${language}"`);
-      }
-      return {
-        q: terms.join(' ')
-      };
-    })
-    .compose(sources.time.debounce(500))
-    .debug('criteria')
-    .map(query => ({
-      url: 'https://api.github.com/search/repositories',
-      query,
-      category: 'github',
-    }));
+  const searchRequest$ =
+    xs.combine(val$('#search'), val$('#language'), val$('#stars'))
+      .filter(query => query[0].length > 0)
+      .compose(sources.time.debounce(500))
+      .map(([search, language, stars]) => {
+        const terms = [search];
+        if (isNumeric(stars)) {
+          terms.push(`stars:">=${stars}"`);
+        }
+        if (language !== '') {
+          terms.push(`language:"${language}"`);
+        }
+        return {
+          q: terms.join(' ')
+        };
+      })
+      .map(query => ({
+        url: 'https://api.github.com/search/repositories',
+        query,
+        category
+      }))
+      .debug('criteria');
 
-  const searchResults$ = sources.HTTP.select('github')
+  const searchResults$ = sources.HTTP.select(category)
     .flatten()
     .map(res => res.body.items)
     .startWith([]);
@@ -63,7 +66,7 @@ function labelField(id: string, labelText: string) {
 }
 
 function view(searchResults$: Stream<any[]>): Stream<VNode> {
-  return searchResults$.map(results =>
+  return searchResults$.map((results: any[]) =>
     div('.pure-g', [
       div('.pure-u-2-3', [
         h2('Github Search'),
