@@ -4,6 +4,10 @@ See it running:
 
 <https://kylecordes.github.io/cycle-example-1>
 
+Video series explaining this code:
+
+[![Video series explaining CycleJS example application](https://img.youtube.com/vi/DEHgcT_RmJc/0.jpg)](https://www.youtube.com/watch?v=DEHgcT_RmJc&list=PLP4qxCldB2jRJmszTeuS1-zghi60g1vzJ)
+
 ## Intro / Goals
 
 This is a small, simple example Cycle application. Its purpose is simply to

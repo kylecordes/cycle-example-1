@@ -1,9 +1,10 @@
 import xs, { Stream } from 'xstream';
-import { VNode } from '@cycle/dom';
-import { DOMSource } from '@cycle/dom';
+import { VNode, DOMSource } from '@cycle/dom';
+import { ModalAction } from 'cyclejs-modal';
+
+// Used for isolated per-component state
 import isolate from '@cycle/isolate';
 import { StateSource } from 'cycle-onionify';
-import { ModalAction } from 'cyclejs-modal';
 
 import { Counter } from './counter';
 import { ModalSummary } from './modal-summary';
@@ -33,15 +34,15 @@ export function Counters(sources: Sources) {
 
 function view(counter1DOM: Stream<VNode>, counter2DOM: Stream<VNode>) {
   return xs.combine(counter1DOM, counter2DOM)
-    .map(([c1, c2]) =>
+    .map(([c1DOM, c2DOM]) =>
       <div className='pure-g'>
         <div className='pure-u-1 pure-u-md-1-3'>
           <h2>Counter 1:</h2>
-          {c1}
+          {c1DOM}
         </div>
         <div className='pure-u-1 pure-u-md-1-3'>
           <h2>Counter 2:</h2>
-          {c2}
+          {c2DOM}
           <p>Try a modal / pop-up</p>
           <button type='button' className='total-button pure-button'>Pop now</button>
         </div>
