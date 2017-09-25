@@ -1,7 +1,7 @@
-// Place your settings in this file to overwrite default and user settings.
 {
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
   "editor.insertSpaces": true,
-  "typescript.referencesCodeLens.enabled": false
+  "typescript.referencesCodeLens.enabled": false,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

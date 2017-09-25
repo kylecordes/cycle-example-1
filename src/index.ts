@@ -1,23 +1,24 @@
-import xs from 'xstream';
-import { run } from '@cycle/run';
 import { makeDOMDriver } from '@cycle/dom';
 import { makeHTTPDriver } from '@cycle/http';
+import { makeHashHistoryDriver } from '@cycle/history';
+import { run } from '@cycle/run';
 import { timeDriver } from '@cycle/time';
-import onionify from 'cycle-onionify';
-import { makeRouterDriver } from 'cyclic-router';
-import { createHashHistory } from 'history';
-import switchPath from 'switch-path';
 import { modalify } from 'cyclejs-modal';
+import { routerify } from 'cyclic-router';
+import onionify from 'cycle-onionify';
+import switchPath from 'switch-path';
+import xs from 'xstream';
 
 import { App, Sources } from './app';
 
-const main = modalify(onionify(App, 'onion'));
+let main = onionify(App, 'onion');
+main = modalify(main);
+main = routerify(main, switchPath);
 
 const drivers: any = {
   DOM: makeDOMDriver('#app'),
   HTTP: makeHTTPDriver(),
-  // https://github.com/cyclejs-community/cyclic-router/issues/192 :
-  router: makeRouterDriver(createHashHistory(), switchPath as any),
+  history: makeHashHistoryDriver(),
   time: timeDriver
 };
 

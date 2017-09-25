@@ -1,6 +1,6 @@
 import xs, { Stream } from 'xstream';
 import { VNode, DOMSource } from '@cycle/dom';
-import { StateSource } from 'cycle-onionify';
+import { StateSource, makeCollection } from 'cycle-onionify';
 import { ul } from '@cycle/dom';
 
 import { Timer, State as TimerState } from './timer';
@@ -15,17 +15,19 @@ interface Sources {
 type Reducer = (prevState: State) => State | undefined;
 
 export function Timers(sources: Sources) {
-  const instances = sources.onion.toCollection(Timer)
-    .uniqueBy(t => t.key)
-    .isolateEach(key => key)
-    .build(sources);
 
-  const listDOM$ = instances
-    .pickCombine('DOM')
-    .map((vnodes: VNode[]) => ul(vnodes));
-
-  const inner$ = instances
-    .pickMerge('onion');
+  const List = makeCollection<TimerState, any, any>({
+    item: Timer,
+    itemKey: (childState, index) => childState.key,
+    itemScope: index => index,
+    collectSinks: instances => {
+      return {
+        onion: instances.pickMerge('onion'),
+        DOM: instances.pickCombine('DOM')
+          .map((vnodes: VNode[]) => ul(vnodes))
+      };
+    }
+  });
 
   const init$ = xs.of<Reducer>(prev => []);
   const add$ = sources.DOM.select('.add').events('click')
@@ -35,9 +37,11 @@ export function Timers(sources: Sources) {
       key: Date.now().toString()
     }]);
 
+  const listSinks = List(sources);
+
   return {
-    DOM: view(listDOM$),
-    onion: xs.merge(init$, inner$, add$)
+    DOM: view(listSinks.DOM),
+    onion: xs.merge(init$, listSinks.onion, add$)
   };
 }
 
